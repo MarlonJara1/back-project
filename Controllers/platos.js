@@ -26,7 +26,12 @@ const postPlato = async(req, res = response) =>{
         await plato.save()
         mensaje = 'Plato registrado exitosamente'
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
 
     res.json({
@@ -46,7 +51,12 @@ const putPlato = async(req, res = response) =>{
         mensaje = 'Plato modificado'
         
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
     res.json({
         mensaje:mensaje
@@ -62,7 +72,7 @@ const deletePlato = async(req, res = response) =>{
         await Plato.deleteOne({_id:body._id})
         mensaje = 'Eliminado exitosamente'
     } catch (error) {
-        mensaje = error
+        mensaje = error.message;
     }
     res.json({
         mensaje

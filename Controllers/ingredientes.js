@@ -26,7 +26,12 @@ const postIngrediente = async(req, res = response) =>{
         await ingrediente.save()
         mensaje = 'Ingrediente registrado exitosamente'
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
 
     res.json({
@@ -46,7 +51,12 @@ const putIngrediente = async(req, res = response) =>{
         mensaje = 'Ingrediente modificado'
         
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
     res.json({
         mensaje:mensaje

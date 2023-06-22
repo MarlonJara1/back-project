@@ -27,7 +27,12 @@ const postDetalle = async(req, res = response) =>{
         await detalle.save()
         mensaje = 'Detalle registrado exitosamente'
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
 
     res.json({
@@ -47,7 +52,12 @@ const putDetalle = async(req, res = response) =>{
             mensaje = 'Detalle modificado exitosamente.'
             
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
     
     res.json({

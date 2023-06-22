@@ -24,9 +24,14 @@ const postCategoria = async(req, res = response) =>{
     console.log(body)
     try {
         await categoria.save()
-        mensaje = 'Usuario registrado exitosamente'
+        mensaje = 'Categoria registrado exitosamente'
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
 
     res.json({
@@ -46,7 +51,12 @@ const putCategoria = async(req, res = response) =>{
         mensaje = 'Categoria modificada'
         
     } catch (error) {
-        mensaje = error
+        if (error.errors) {
+            const errorMessages = Object.values(error.errors).map((err) => err.message);
+            mensaje = errorMessages.join('. ');
+          } else {
+            mensaje = error.message;
+          }
     }
     res.json({
         mensaje:mensaje
